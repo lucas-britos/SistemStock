@@ -1,0 +1,50 @@
+@model SistemStock.Models.ViewModels.TransferenciaViewModel
+@{
+    ViewData["Title"] = "Transferencia entre Depósitos";
+}
+<h1>Transferencia entre Depósitos</h1>
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="Transferencia">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-3">
+                <label asp-for="idProducto" class="control-label"></label>
+                <select asp-for="idProducto" class="form-select" asp-items="Model.Productos">
+                    <option value="">-- Seleccione un producto --</option>
+                </select>
+                <span asp-validation-for="idProducto" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="idDepositoOrigen" class="control-label"></label>
+                <select asp-for="idDepositoOrigen" class="form-select" asp-items="Model.Depositos">
+                    <option value="">-- Seleccione depósito origen --</option>
+                </select>
+                <span asp-validation-for="idDepositoOrigen" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="idDepositoDestino" class="control-label"></label>
+                <select asp-for="idDepositoDestino" class="form-select" asp-items="Model.Depositos">
+                    <option value="">-- Seleccione depósito destino --</option>
+                </select>
+                <span asp-validation-for="idDepositoDestino" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Cantidad" class="control-label"></label>
+                <input asp-for="Cantidad" class="form-control" />
+                <span asp-validation-for="Cantidad" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Observaciones" class="control-label"></label>
+                <textarea asp-for="Observaciones" class="form-control" rows="2"></textarea>
+                <span asp-validation-for="Observaciones" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <button type="submit" class="btn btn-info">Registrar Transferencia</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

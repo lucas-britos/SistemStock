@@ -1,0 +1,30 @@
+@model SistemStock.Models.ViewModels.CategoriaViewModel
+@{
+    ViewData["Title"] = "Detalle de Categoría";
+}
+<h1>Detalle de Categoría</h1>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Nombre)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nombre)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Descripcion)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Descripcion)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Activo)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Activo)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.CreatedAt)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.UpdatedAt)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.UpdatedAt)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CantidadProductos)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.CantidadProductos)</dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.id">Editar</a> |
+    <a asp-action="Index">Volver al listado</a>
+</div>

@@ -1,0 +1,89 @@
+@model SistemStock.Models.ViewModels.MovimientosHistorialViewModel
+@{
+    ViewData["Title"] = "Movimientos de Stock";
+}
+<h1>Movimientos de Stock</h1>
+
+@if (TempData["Ok"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Ok"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="mb-3">
+    <a asp-action="Entrada" class="btn btn-success">+ Entrada</a>
+    <a asp-action="Salida" class="btn btn-warning">- Salida</a>
+    <a asp-action="Transferencia" class="btn btn-info">Transferencia</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="tipoFiltro" asp-items="Html.GetEnumSelectList<SistemStock.Models.Enum.TipoMovimiento>()" class="form-select">
+            <option value="">Todos los tipos</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <select name="productoIdFiltro" asp-items="Model.Productos" class="form-select">
+            <option value="">Todos los productos</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <select name="depositoIdFiltro" asp-items="Model.Depositos" class="form-select">
+            <option value="">Todos los depósitos</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="date" name="fechaDesde" class="form-control" value="@Model.FechaDesde?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-auto">
+        <input type="date" name="fechaHasta" class="form-control" value="@Model.FechaHasta?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-secondary">Filtrar</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Proveedor/Cliente</th>
+            <th>Observaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Movimientos.Any())
+        {
+            <tr>
+                <td colspan="8" class="text-center text-muted py-4">No se encontraron movimientos.</td>
+            </tr>
+        }
+        @foreach (var item in Model.Movimientos)
+        {
+            <tr>
+                <td>@item.Fecha.ToString("g")</td>
+                <td>@item.Tipo</td>
+                <td>@item.Producto?.Nombre</td>
+                <td>@item.Cantidad</td>
+                <td>@item.DepositoOrigen?.Nombre</td>
+                <td>@item.DepositoDestino?.Nombre</td>
+                <td>@(item.Proveedor?.Nombre ?? item.Cliente?.Nombre)</td>
+                <td>@item.Observaciones</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,36 @@
+@model IEnumerable<SistemStock.Models.Entities.Producto>
+@{
+    ViewData["Title"] = "Stock de Productos";
+}
+
+<h1>@ViewData["Title"]</h1>
+@foreach (var producto in Model)
+{
+    <h4>@producto.Nombre</h4>
+
+    <p>
+        Stock total: <strong>@producto.StockTotal</strong>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Depósito</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var stock in producto.Stocks)
+            {
+                if (stock.Cantidad != 0)
+                {
+                    <tr>
+                        <td>@stock.Deposito?.Nombre</td>
+                        <td>@stock.Cantidad</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

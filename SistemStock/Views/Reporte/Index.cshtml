@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "Reporte";
+    ViewData["SubTitle"] = "Generar Reporte de Movimientos";
+}
+
+<div class="card p-4 mt-3">
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label class="form-label">Desde</label>
+            <input type="date" id="desde" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Hasta</label>
+            <input type="date" id="hasta" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Tipo</label>
+            <select id="tipo" class="form-select">
+                <option value="">Todos</option>
+                <option value="1">Entrada</option>
+                <option value="2">Salida</option>
+                <option value="3">Transferencia</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end gap-2">
+            <a id="btnExcel" href="#" class="btn btn-success w-100">
+                Descargar Excel
+            </a>
+            <a id="btnPdf" href="#" class="btn btn-danger w-100">
+                Descargar PDF
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function actualizarLinks() {
+            const d = document.getElementById('desde').value;
+            const h = document.getElementById('hasta').value;
+            const t = document.getElementById('tipo').value;
+            const q = `?desde=${d}&hasta=${h}&tipo=${t}`;
+            document.getElementById('btnExcel').href = '/Reporte/DescargarExcel' + q;
+            document.getElementById('btnPdf').href = '/Reporte/DescargarPdf' + q;
+        }
+        document.querySelectorAll('#desde,#hasta,#tipo')
+            .forEach(el => el.addEventListener('change', actualizarLinks));
+        actualizarLinks();
+    </script>
+}

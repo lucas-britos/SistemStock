@@ -1,0 +1,130 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+
+    var enMovimientos = controller == "Movimiento";
+}
+
+<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+    <div class="sidebar-brand">
+        <a href="#" class="brand-link">
+            <img src="~/img/Logo.png" alt="Sistema Stock" class="brand-image opacity-75 shadow" />
+            <span class="brand-text fw-light">Sistema Stock</span>
+        </a>
+    </div>
+    <div class="sidebar-wrapper">
+        <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
+                <li class="nav-item">
+                    <a asp-controller="Dashboard" asp-action="Index"
+                       class="nav-link @(controller == "Dashboard" ? "active" : "")">
+                        <i class="nav-icon bi bi-speedometer"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+
+                <li class="nav-header">INVENTARIO</li>
+
+                <li class="nav-item">
+                    <a asp-controller="Producto" asp-action="Index"
+                       class="nav-link @(controller == "Producto" ? "active" : "")">
+                        <i class="nav-icon bi bi-box-seam"></i>
+                        <p>Productos</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a asp-controller="Categoria" asp-action="Index"
+                       class="nav-link @(controller == "Categoria" ? "active" : "")">
+                        <i class="nav-icon bi bi-tags"></i>
+                        <p>Categorías</p>
+                    </a>
+                </li>
+
+                <li class="nav-item @(enMovimientos ? "menu-open" : "")">
+                    <a href="#" class="nav-link @(enMovimientos ? "active" : "")">
+                        <i class="nav-icon bi bi-arrow-left-right"></i>
+                        <p>
+                            Movimientos
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="Movimiento" asp-action="Entrada"
+                               class="nav-link @(controller == "Movimiento" && action == "Entrada" ? "active" : "")">
+                                <i class="nav-icon bi bi-box-arrow-in-down"></i>
+                                <p>Nueva entrada</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Movimiento" asp-action="Salida"
+                               class="nav-link @(controller == "Movimiento" && action == "Salida" ? "active" : "")">
+                                <i class="nav-icon bi bi-box-arrow-up"></i>
+                                <p>Nueva salida</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Movimiento" asp-action="Transferencia"
+                               class="nav-link @(controller == "Movimiento" && action == "Transferencia" ? "active" : "")">
+                                <i class="nav-icon bi bi-truck"></i>
+                                <p>Transferencia</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Movimiento" asp-action="Index"
+                               class="nav-link @(controller == "Movimiento" && action == "Index" ? "active" : "")">
+                                <i class="nav-icon bi bi-clock-history"></i>
+                                <p>Historial</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a asp-controller="Stock" asp-action="Index"
+                       class="nav-link @(controller == "Stock" ? "active" : "")">
+                        <i class="nav-icon bi bi-boxes"></i>
+                        <p>Stock</p>
+                    </a>
+                </li>
+
+                <li class="nav-header">MAESTROS</li>
+
+                <li class="nav-item">
+                    <a asp-controller="Deposito" asp-action="Index"
+                       class="nav-link @(controller == "Deposito" ? "active" : "")">
+                        <i class="nav-icon bi bi-building"></i>
+                        <p>Depósitos</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a asp-controller="Cliente" asp-action="Index"
+                       class="nav-link @(controller == "Cliente" ? "active" : "")">
+                        <i class="nav-icon bi bi-people"></i>
+                        <p>Clientes</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a asp-controller="Proveedor" asp-action="Index"
+                       class="nav-link @(controller == "Proveedor" ? "active" : "")">
+                        <i class="nav-icon bi bi-shop"></i>
+                        <p>Proveedores</p>
+                    </a>
+                </li>
+
+                <li class="nav-header">ANÁLISIS</li>
+
+                <li class="nav-item">
+                    <a asp-controller="Reporte" asp-action="Index"
+                       class="nav-link @(controller == "Reporte" ? "active" : "")">
+                        <i class="nav-icon bi bi-bar-chart-line"></i>
+                        <p>Reportes</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

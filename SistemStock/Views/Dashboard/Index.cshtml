@@ -1,0 +1,120 @@
+@model SistemStock.Models.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Panel de Control";
+    ViewData["SubTitle"] = "Dashboard";
+}
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5>Productos</h5>
+                <h2>@Model.TotalProductosActivos</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5>Proveedores</h5>
+                <h2>@Model.TotalProveedoresActivos</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5>Clientes</h5>
+                <h2>@Model.TotalClientesActivos</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5>Depositos</h5>
+                <h2>@Model.TotalDepositosActivos</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5>Valor Total del Inventario</h5>
+                <h2>@String.Format("{0:C2}", Model.ValorTotalInventario)</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5>Ventas de hoy</h5>
+                <h2>@String.Format("{0:C2}", @Model.ValorVentasHoy)</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5>Movim. Hoy</h5>
+                <h2>@Model.MovimientosHoy</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white fw-semibold text-danger">Alertas de reposición</div>
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-sm table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr><th>Producto</th><th>Categoría</th><th class="text-end">Stock actual</th><th class="text-end">Stock mínimo</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model.AlertasReposicion)
+                {
+                    <tr class="@(a.SinStock ? "table-danger" : "")">
+                        <td>@a.Producto</td>
+                        <td>@a.Categoria</td>
+                        <td class="text-end fw-bold text-danger">@String.Format("{0:N2}", a.StockTotal)</td>
+                        <td class="text-end">@String.Format("{0:N2}", a.StockMinimo)</td>
+                        <td><span class="badge @(a.SinStock ? "bg-danger" : "bg-warning text-dark")">@a.Estado</span></td>
+                    </tr>
+                }
+                @if (!Model.AlertasReposicion.Any()) { <tr><td colspan="5" class="text-center text-success py-3">Sin alertas de reposición</td></tr> }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold">Top 5 con mayor stock</div>
+            <div class="card-body"><canvas id="chartMayor"></canvas></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold">Top 5 con menor stock</div>
+            <div class="card-body"><canvas id="chartMenor"></canvas></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        const mayor = @Html.Raw(Json.Serialize(Model.TopMayorStock));
+        const menor = @Html.Raw(Json.Serialize(Model.TopMenorStock));
+
+        const barra = (id, data, color) => new Chart(document.getElementById(id), {
+            type: 'bar',
+            data: { labels: data.map(x => x.producto), datasets: [{ label: 'Stock total', data: data.map(x => x.stockTotal), backgroundColor: color }] },
+            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
+        });
+        barra('chartMayor', mayor, '#198754');
+        barra('chartMenor', menor, '#dc3545');
+    </script>
+}

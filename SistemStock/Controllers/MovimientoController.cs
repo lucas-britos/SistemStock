@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using SistemStock.Models.Entities;
 using SistemStock.Models.Enum;
 using SistemStock.Models.ViewModels;
 
+[Authorize(Roles = "Administrador,Encargado,Operador")]
 public class MovimientoController : Controller
 {
     private readonly AppDbContext _context;
@@ -14,7 +16,6 @@ public class MovimientoController : Controller
         _context = context;
     }
 
-    // GET: MOVIMIENTO (historial)
     public async Task<IActionResult> Index(TipoMovimiento? tipoFiltro, int? productoIdFiltro, int? depositoIdFiltro, DateTime? fechaDesde, DateTime? fechaHasta)
     {
         var query = _context.Movimientos
@@ -75,15 +76,15 @@ public class MovimientoController : Controller
         return model;
     }
 
-    // GET: MOVIMIENTO/Entrada
+    [Authorize(Roles = "Administrador,Operador")]
     public async Task<IActionResult> Entrada()
     {
         var model = await PrepararOperacionStock(new OperacionStockViewModel(), esSalida: false);
         return View(model);
     }
 
-    // POST: MOVIMIENTO/Entrada
     [HttpPost]
+    [Authorize(Roles = "Administrador,Operador")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Entrada(OperacionStockViewModel model)
     {
@@ -100,7 +101,8 @@ public class MovimientoController : Controller
                 Observaciones = model.Observaciones,
                 idProducto = model.idProducto.Value,
                 idDepositoOrigen = model.idDepositoOrigen,
-                idProveedor = model.idProveedor
+                idProveedor = model.idProveedor,
+                UsuarioRegistro = User.Identity?.Name ?? "Sistema"
             };
 
             _context.Movimientos.Add(movimiento);
@@ -114,14 +116,12 @@ public class MovimientoController : Controller
         return View(model);
     }
 
-    // GET: MOVIMIENTO/Salida
     public async Task<IActionResult> Salida()
     {
         var model = await PrepararOperacionStock(new OperacionStockViewModel(), esSalida: true);
         return View(model);
     }
 
-    // POST: MOVIMIENTO/Salida
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Salida(OperacionStockViewModel model)
@@ -147,7 +147,8 @@ public class MovimientoController : Controller
                 Observaciones = model.Observaciones,
                 idProducto = model.idProducto.Value,
                 idDepositoOrigen = model.idDepositoOrigen,
-                idCliente = model.idCliente
+                idCliente = model.idCliente,
+                UsuarioRegistro = User.Identity?.Name ?? "Sistema"
             };
 
             _context.Movimientos.Add(movimiento);
@@ -161,7 +162,6 @@ public class MovimientoController : Controller
         return View(model);
     }
 
-    // GET: MOVIMIENTO/Transferencia
     public async Task<IActionResult> Transferencia()
     {
         var model = new TransferenciaViewModel
@@ -172,7 +172,6 @@ public class MovimientoController : Controller
         return View(model);
     }
 
-    // POST: MOVIMIENTO/Transferencia
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Transferencia(TransferenciaViewModel model)
@@ -209,7 +208,8 @@ public class MovimientoController : Controller
                 Observaciones = model.Observaciones,
                 idProducto = model.idProducto.Value,
                 idDepositoOrigen = model.idDepositoOrigen,
-                idDepositoDestino = model.idDepositoDestino
+                idDepositoDestino = model.idDepositoDestino,
+                UsuarioRegistro = User.Identity?.Name ?? "Sistema"
             });
 
             _context.Movimientos.Add(new Movimiento
@@ -220,7 +220,8 @@ public class MovimientoController : Controller
                 Observaciones = model.Observaciones,
                 idProducto = model.idProducto.Value,
                 idDepositoOrigen = model.idDepositoOrigen,
-                idDepositoDestino = model.idDepositoDestino
+                idDepositoDestino = model.idDepositoDestino,
+                UsuarioRegistro = User.Identity?.Name ?? "Sistema"
             });
 
             await _context.SaveChangesAsync();

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using QuestPDF.Infrastructure;
 using SistemStock.Models.Entities;
 using SistemStock.Models.Enum;
 
+[Authorize]
 public class ReporteController : Controller
 {
     private readonly AppDbContext _context;

@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemStock.Models.Enum;
 using SistemStock.Models.ViewModels;
 
+[Authorize]
 public class DashboardController : Controller
 {
     private readonly AppDbContext _context;

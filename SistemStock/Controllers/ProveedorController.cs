@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemStock.Models.Entities;
 using SistemStock.Models.ViewModels;
 
+[Authorize(Roles = "Administrador,Encargado")]
 public class ProveedorController : Controller
 {
     private readonly AppDbContext _context;

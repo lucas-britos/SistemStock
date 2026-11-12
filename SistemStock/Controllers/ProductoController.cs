@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemStock.Models.Entities;
 using SistemStock.Models.ViewModels;
 
+[Authorize(Roles = "Administrador,Encargado")]
 public class ProductoController : Controller
 {
     private readonly AppDbContext _context;
